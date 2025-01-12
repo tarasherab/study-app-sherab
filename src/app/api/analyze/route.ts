@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       apiKey: process.env.ANTHROPIC_API_KEY
     });
 
-    const body = await request.json();
+    const body: AnalyzeRequest = await request.json();
 
     const { topic, studentName, schoolGrade, accuracy, bulletPoints, spokenText, language } = body;
 

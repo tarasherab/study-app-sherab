@@ -130,20 +130,20 @@ const TabContent: React.FC<TabContentProps> = ({ tabId, updateTabTitle }) => {
             recognition.interimResults = true;
             recognition.lang = language === 'german' ? 'de-DE' :
                 language === 'latin' ? 'en-US' : 'en-US';
-
-            recognition.onresult = (event: any) => {
+    
+            recognition.onresult = (event: SpeechRecognitionEvent) => {
                 const transcript = Array.from(event.results)
-                    .map((result: any) => result[0])
-                    .map((result: any) => result.transcript)
+                    .map((result: SpeechRecognitionResult) => result[0])
+                    .map((result: SpeechRecognitionAlternative) => result.transcript)
                     .join('');
                 setSpokenText(transcript);
             };
-
-            recognition.onerror = (event: any) => {
+    
+            recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
                 console.error('Speech recognition error:', event.error);
                 setIsRecording(false);
             };
-
+    
             setRecognition(recognition);
         }
     }, [language]);

@@ -28,7 +28,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 setError('Incorrect password');
                 setPassword('');
             }
-        } catch (error) {
+        } catch (err) {
             setError('An error occurred');
         }
     };
