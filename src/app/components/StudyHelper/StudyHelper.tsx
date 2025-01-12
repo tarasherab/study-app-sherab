@@ -60,10 +60,10 @@ const StudyHelper: React.FC = () => {
 
   const removeTab = (tabId: number): void => {
     if (tabs.length === 1) return; // Don't remove the last tab
-    
+
     // Clean up stored data for this tab
     localStorage.removeItem(`tab_${tabId}_data`);
-    
+
     const newTabs = tabs.filter(tab => tab.id !== tabId);
     if (tabId === activeTabId) {
       setActiveTabId(newTabs[0].id);
@@ -76,9 +76,24 @@ const StudyHelper: React.FC = () => {
   };
 
   const updateTabTitle = (tabId: number, newTitle: string): void => {
-    setTabs(tabs.map(tab => 
+    setTabs(tabs.map(tab =>
       tab.id === tabId ? { ...tab, title: newTitle } : tab
     ));
+  };
+
+  const resetAllTabs = () => {
+    // Reset all tabs to initial state
+    const initialTab = { id: 1, title: 'Topic 1', isActive: true };
+    setTabs([initialTab]);
+    setActiveTabId(1);
+    setNextTabId(2);
+
+    // Clear all tab data from localStorage
+    tabs.forEach(tab => {
+      localStorage.removeItem(`tab_${tab.id}_data`);
+    });
+    localStorage.removeItem('studyTabs');
+    localStorage.removeItem('activeTabId');
   };
 
   return (
@@ -88,11 +103,10 @@ const StudyHelper: React.FC = () => {
         {tabs.map(tab => (
           <div
             key={tab.id}
-            className={`group relative flex items-center px-4 py-2 cursor-pointer ${
-              activeTabId === tab.id
+            className={`group relative flex items-center px-4 py-2 cursor-pointer ${activeTabId === tab.id
                 ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-500'
                 : 'hover:bg-gray-50'
-            }`}
+              }`}
           >
             {/* Tab content */}
             <span
@@ -101,7 +115,7 @@ const StudyHelper: React.FC = () => {
             >
               {tab.title}
             </span>
-            
+
             {/* Close button */}
             {tabs.length > 1 && (
               <button
@@ -116,7 +130,7 @@ const StudyHelper: React.FC = () => {
             )}
           </div>
         ))}
-        
+
         {/* Add tab button */}
         <button
           onClick={addTab}
@@ -124,6 +138,13 @@ const StudyHelper: React.FC = () => {
           title="Add new topic"
         >
           <Plus className="h-5 w-5" />
+        </button>
+        {/* Add Reset All button */}
+        <button
+            onClick={resetAllTabs}
+            className="px-3 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50 ml-auto mr-2"
+        >
+            Reset All Tabs
         </button>
       </div>
 
@@ -134,7 +155,7 @@ const StudyHelper: React.FC = () => {
             key={tab.id}
             className={activeTabId === tab.id ? 'block' : 'hidden'}
           >
-            <TabContent 
+            <TabContent
               tabId={tab.id}
               updateTabTitle={(title: string) => updateTabTitle(tab.id, title)}
             />
