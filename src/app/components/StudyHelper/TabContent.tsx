@@ -23,11 +23,11 @@ interface FeedbackState {
     details?: string;
 }
 
-declare global {
-    interface Window {
-        webkitSpeechRecognition: any;
-    }
-}
+// declare global {
+//     interface Window {
+//         webkitSpeechRecognition: any;
+//     }
+// }
 
 const TabContent: React.FC<TabContentProps> = ({ tabId, updateTabTitle }) => {
     // All your existing state declarations
